@@ -18,14 +18,8 @@ func elaboraInput() (tot int) {
 	for scanner.Scan() {
 		line := replaceOverlapping(scanner.Text())
 		match := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`).FindAllString(line, -1)
-		convertMatch := convertStringNumtoInt(match)
-		num1 := convertMatch[0] * 10
-		if len(match) == 1 {
-			tot += num1 + (num1 / 10)
-		} else {
-			tot += num1 + convertMatch[len(convertMatch)-1]
-		}
-
+		num1, num2 := convertStringNumtoInt(match)
+		tot += (num1 * 10) + num2
 	}
 	return tot
 }
@@ -47,8 +41,9 @@ func inizializzaMappa() map[string]int {
 	return dict
 }
 
-func convertStringNumtoInt(match []string) (ris []int) {
+func convertStringNumtoInt(match []string) (int, int) {
 	dict := inizializzaMappa()
+	var ris []int
 	for i := 0; i < len(match); i++ {
 		if val, isPresente := dict[match[i]]; isPresente {
 			ris = append(ris, val)
@@ -57,6 +52,5 @@ func convertStringNumtoInt(match []string) (ris []int) {
 			ris = append(ris, n)
 		}
 	}
-	return ris
-
+	return ris[0], ris[len(ris)-1]
 }
