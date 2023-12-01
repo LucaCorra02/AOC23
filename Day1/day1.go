@@ -19,8 +19,7 @@ func elaboraInput() (tot int) {
 		line := replaceOverlapping(scanner.Text())
 		match := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`).FindAllString(line, -1)
 		convertMatch := convertStringNumtoInt(match)
-		num1 := convertMatch[0]
-		num1 *= 10
+		num1 := convertMatch[0] * 10
 		if len(match) == 1 {
 			tot += num1 + (num1 / 10)
 		} else {
