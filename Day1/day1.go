@@ -6,16 +6,29 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	fmt.Printf("il totale è : %d\n", elaboraInput())
 }
 
+//55334
+
 func elaboraInput() (tot int) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		match := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`).FindAllString(scanner.Text(), -1)
+		line := scanner.Text()
+		line = strings.Replace(line, "oneight", "one eight", -1)
+		line = strings.Replace(line, "nineight", "nine eight", -1)
+		line = strings.Replace(line, "sevenine", "seven nine", -1)
+		line = strings.Replace(line, "twone", "two one", -1)
+		line = strings.Replace(line, "threeight", "three eight", -1)
+		line = strings.Replace(line, "fiveight", "five eight", -1)
+		line = strings.Replace(line, "eightree", "eight three", -1)
+		line = strings.Replace(line, "eightwo", "eight two", -1)
+
+		match := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`).FindAllString(line, -1)
 		convertMatch := convertStringNumtoInt(match)
 		num1 := convertMatch[0]
 		num1 *= 10
@@ -29,35 +42,21 @@ func elaboraInput() (tot int) {
 	return tot
 }
 
-func convertStringNumtoInt(match []string) (ris []int) {
-	for i := 0; i < len(match); i++ {
-		ris = append(ris, numStringToInt(match[i]))
-	}
-	return ris
+func inizializzaMappa() map[string]int {
+	dict := map[string]int{"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9}
+	return dict
 }
 
-func numStringToInt(str string) int {
-	switch str {
-	case "one":
-		return 1
-	case "two":
-		return 2
-	case "three":
-		return 3
-	case "four":
-		return 4
-	case "five":
-		return 5
-	case "six":
-		return 6
-	case "seven":
-		return 7
-	case "eight":
-		return 8
-	case "nine":
-		return 9
-	default:
-		n, _ := strconv.Atoi(str)
-		return n
+func convertStringNumtoInt(match []string) (ris []int) {
+	dict := inizializzaMappa()
+	for i := 0; i < len(match); i++ {
+		if val, isPresente := dict[match[i]]; isPresente {
+			ris = append(ris, val)
+		} else {
+			n, _ := strconv.Atoi(match[i])
+			ris = append(ris, n)
+		}
 	}
+	return ris
+
 }
