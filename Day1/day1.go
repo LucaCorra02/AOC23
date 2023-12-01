@@ -18,16 +18,7 @@ func main() {
 func elaboraInput() (tot int) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		line := scanner.Text()
-		line = strings.Replace(line, "oneight", "one eight", -1)
-		line = strings.Replace(line, "nineight", "nine eight", -1)
-		line = strings.Replace(line, "sevenine", "seven nine", -1)
-		line = strings.Replace(line, "twone", "two one", -1)
-		line = strings.Replace(line, "threeight", "three eight", -1)
-		line = strings.Replace(line, "fiveight", "five eight", -1)
-		line = strings.Replace(line, "eightree", "eight three", -1)
-		line = strings.Replace(line, "eightwo", "eight two", -1)
-
+		line := replaceOverlapping(scanner.Text())
 		match := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`).FindAllString(line, -1)
 		convertMatch := convertStringNumtoInt(match)
 		num1 := convertMatch[0]
@@ -40,6 +31,18 @@ func elaboraInput() (tot int) {
 
 	}
 	return tot
+}
+
+func replaceOverlapping(line string) (ris string) {
+	ris = strings.Replace(line, "oneight", "one eight", -1)
+	ris = strings.Replace(ris, "nineight", "nine eight", -1)
+	ris = strings.Replace(ris, "sevenine", "seven nine", -1)
+	ris = strings.Replace(ris, "twone", "two one", -1)
+	ris = strings.Replace(ris, "threeight", "three eight", -1)
+	ris = strings.Replace(ris, "fiveight", "five eight", -1)
+	ris = strings.Replace(ris, "eightree", "eight three", -1)
+	ris = strings.Replace(ris, "eightwo", "eight two", -1)
+	return ris
 }
 
 func inizializzaMappa() map[string]int {
