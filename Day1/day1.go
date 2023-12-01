@@ -15,7 +15,7 @@ func main() {
 func elaboraInput() (tot int) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		match := regexp.MustCompile(`\d`).FindAllString(scanner.Text(), -1)
+		match := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`).FindAllString(scanner.Text(), -1)
 		num1, _ := strconv.Atoi(match[0])
 		num1 *= 10
 		if len(match) == 1 {
