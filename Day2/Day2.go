@@ -18,7 +18,12 @@ func leggiFile() {
 	for scanner.Scan() {
 		match := regexp.MustCompile(`\d* r|\d* g|\d* b`).FindAllString(scanner.Text(), -1)
 		dict := map[byte]int{'r': 0, 'b': 0, 'g': 0}
-		createRoundMap(dict, match)
+		for _, round := range match {
+			color := len(round) - 1
+			n, _ := strconv.Atoi(round[:color-1])
+			dict[round[color]] = max(dict[round[color]], n)
+		}
+
 		if dict['b'] <= 14 && dict['r'] <= 12 && dict['g'] <= 13 {
 			pt1 += game + 1
 		}
