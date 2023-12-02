@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -17,29 +16,34 @@ func main() {
 
 func leggiFile() {
 	scanner := bufio.NewScanner(os.Stdin)
-	var pt1 int
-	var pt2 int
-	var i = 0
+	var pt1, pt2, game int
 	for scanner.Scan() {
 		line := strings.Split(strings.TrimSpace(scanner.Text()), ";")
 		regex := regexp.MustCompile(`\d* r|\d* g|\d* b`)
-		dict := map[string]int{"r": 0, "b": 0, "g": 0}
+
+		dict := map[byte]int{'r': 0, 'b': 0, 'g': 0}
 		for _, str := range line {
-
 			match := regex.FindAllString(str, -1)
-
-			for _, play := range match { //singoli round
+			for _, play := range match { //singoli match
 				color := len(play) - 1
 				n, _ := strconv.Atoi(play[:color-1])
-				dict[string(play[color])] = slices.Max([]int{dict[string(play[color])], n})
+				dict[play[color]] = max(dict[play[color]], n)
 			}
 		}
-		if dict["b"] <= 14 && dict["r"] <= 12 && dict["g"] <= 13 {
-			pt1 += i + 1
+
+		if dict['b'] <= 14 && dict['r'] <= 12 && dict['g'] <= 13 {
+			pt1 += game + 1
 		}
-		pt2 += dict["r"] * dict["g"] * dict["b"]
-		i++
+		pt2 += dict['r'] * dict['g'] * dict['b']
+		game++
 	}
 
-	fmt.Println(pt1, pt2)
+	fmt.Printf("Parte 1 : %d, Parte 2 : %d\n", pt1, pt2)
+}
+
+func max(num1, num2 int) int {
+	if num1 > num2 {
+		return num1
+	}
+	return num2
 }
