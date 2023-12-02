@@ -30,7 +30,6 @@ func leggiFile() {
 				dict[play[color]] = max(dict[play[color]], n)
 			}
 		}
-
 		if dict['b'] <= 14 && dict['r'] <= 12 && dict['g'] <= 13 {
 			pt1 += game + 1
 		}
