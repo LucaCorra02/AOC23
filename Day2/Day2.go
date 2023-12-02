@@ -24,7 +24,7 @@ func leggiFile() {
 		dict := map[byte]int{'r': 0, 'b': 0, 'g': 0}
 		for _, str := range line {
 			match := regex.FindAllString(str, -1)
-			for _, play := range match { //singoli match
+			for _, play := range match { //singole giocate nel match
 				color := len(play) - 1
 				n, _ := strconv.Atoi(play[:color-1])
 				dict[play[color]] = max(dict[play[color]], n)
