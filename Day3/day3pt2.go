@@ -5,19 +5,20 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strconv"
 )
 
 func main() {
 	numeri, caratteri, dimRiga := leggiFile()
-	calcolaPunteggio(numeri, caratteri, dimRiga)
+	fmt.Printf("ris : %d\n", calcolaPunteggio(numeri, caratteri, dimRiga))
 }
 
-func calcolaPunteggio(numeri map[string][]int, caratteri map[int][]string, dimRiga int) {
+func calcolaPunteggio(numeri map[string][]int, caratteri map[int][]string, dimRiga int) int {
+	var tot int
 	for num, slc := range numeri {
 		start := slc[0]
 		finish := slc[len(slc)-1]
 		for index := start; index <= finish; index++ {
-			//fmt.Println(num, index)
 			if foundKey(caratteri, index+1) {
 				caratteri[index+1] = append(caratteri[index+1], num)
 				break
@@ -43,9 +44,25 @@ func calcolaPunteggio(numeri map[string][]int, caratteri map[int][]string, dimRi
 				break
 			}
 		}
+		tot += calcolaParziale(caratteri)
 	}
-	fmt.Println(caratteri)
+	tot += calcolaParziale(caratteri)
+	return tot
+}
 
+func calcolaParziale(caratteri map[int][]string) (ris int) {
+	for key, slc := range caratteri {
+		if len(slc) >= 2 {
+			var i int
+			for i = 0; i < len(slc); i += 2 {
+				n1, _ := strconv.Atoi(slc[i])
+				n2, _ := strconv.Atoi(slc[i+1])
+				ris += n1 * n2
+			}
+			caratteri[key] = slc[i:]
+		}
+	}
+	return
 }
 
 func foundKey(caratteri map[int][]string, pos int) bool {
