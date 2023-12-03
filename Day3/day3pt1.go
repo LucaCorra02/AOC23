@@ -13,7 +13,6 @@ const COL = 140
 
 func main() {
 	field := leggiFile()
-	//printField(field)
 	fmt.Printf("punteggio: %d \n", calcolaPunteggio(field))
 }
 
@@ -79,13 +78,4 @@ func leggiFile() [][]rune {
 	field[0] = []rune(strings.Repeat(".", lunghezzaRiga+2))
 	field[COL+1] = []rune(strings.Repeat(".", lunghezzaRiga+2))
 	return field
-}
-
-func printField(field [][]rune) {
-	for i := 0; i < len(field); i++ {
-		for j := 0; j < len(field[i]); j++ {
-			fmt.Print(string(field[i][j]) + " ")
-		}
-		fmt.Println()
-	}
 }
