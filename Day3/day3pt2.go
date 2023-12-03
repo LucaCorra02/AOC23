@@ -21,27 +21,21 @@ func calcolaPunteggio(numeri map[string][]int, caratteri map[int][]string, dimRi
 		for index := start; index <= finish; index++ {
 			if foundKey(caratteri, index+1) {
 				caratteri[index+1] = append(caratteri[index+1], num)
-				break
 			}
 			if foundKey(caratteri, index-1) {
 				caratteri[index-1] = append(caratteri[index-1], num)
-				break
 			}
 			if foundKey(caratteri, dimRiga+index+1) {
 				caratteri[dimRiga+index+1] = append(caratteri[dimRiga+index+1], num)
-				break
 			}
 			if foundKey(caratteri, dimRiga+index-1) {
 				caratteri[dimRiga+index-1] = append(caratteri[dimRiga+index-1], num)
-				break
 			}
 			if foundKey(caratteri, index-dimRiga+1) {
 				caratteri[index-dimRiga+1] = append(caratteri[index-dimRiga+1], num)
-				break
 			}
 			if foundKey(caratteri, index-dimRiga-1) {
 				caratteri[index-dimRiga-1] = append(caratteri[index-dimRiga-1], num)
-				break
 			}
 		}
 		tot += calcolaParziale(caratteri)
@@ -54,12 +48,12 @@ func calcolaParziale(caratteri map[int][]string) (ris int) {
 	for key, slc := range caratteri {
 		if len(slc) >= 2 {
 			var i int
-			for i = 0; i < len(slc); i += 2 {
+			for i = 0; i < len(slc)-1; i += 2 {
 				n1, _ := strconv.Atoi(slc[i])
 				n2, _ := strconv.Atoi(slc[i+1])
 				ris += n1 * n2
 			}
-			caratteri[key] = slc[i:]
+			caratteri[key] = slc[i-1:]
 		}
 	}
 	return
