@@ -54,13 +54,12 @@ func matchPoints(possiblyWinner []string, winCards map[string]bool) (points int,
 	first := true
 	for _, val := range possiblyWinner {
 		if _, ok := winCards[val]; ok {
-			numMatch++
+			points *= 2
 			if first {
 				points += 1
 				first = false
-			} else {
-				points *= 2
 			}
+			numMatch++
 		}
 	}
 	return points, numMatch
