@@ -21,11 +21,9 @@ func main() {
 func leggiFile() int {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
-	var seed []uint64
-	for _, s := range strings.Split(scanner.Text(), " ")[1:] {
-		n, _ := strconv.ParseUint(s, 10, 64)
-		seed = append(seed, n)
-	}
+	line := scanner.Text()
+	seed := createSeed2(line)
+	fmt.Println("start: ", seed)
 	scanner.Scan()
 	scanner.Text()
 	var scales []scale
@@ -44,7 +42,29 @@ func leggiFile() int {
 		}
 	}
 	seed = doConvertion(&seed, &scales)
+	fmt.Println("finish:", seed)
 	return int(findMin(seed))
+}
+
+func createSeed2(str string) (seed []uint64) {
+	s := strings.Split(str, " ")[1:]
+	for i := 0; i < len(s)-1; i++ {
+		to, _ := strconv.ParseUint(s[i+1], 10, 64)
+		var j uint64
+		for j = 0; j <= to; j++ {
+			n, _ := strconv.ParseUint(s[i], 10, 64)
+			seed = append(seed, n+uint64(j))
+		}
+	}
+	return seed
+}
+
+func createSeed(str string) (seed []uint64) {
+	for _, s := range strings.Split(str, " ")[1:] {
+		n, _ := strconv.ParseUint(s, 10, 64)
+		seed = append(seed, n)
+	}
+	return seed
 }
 
 func doConvertion(seed *[]uint64, scales *[]scale) (convertiti []uint64) {
