@@ -9,21 +9,34 @@ import (
 )
 
 func main() {
-	time, distance := leggiInput()
-	fmt.Println(time, distance)
-	calcolaCombinazioni(time, distance)
+	time, distance, timePt2, distancePt2 := leggiInput()
+	pt1 := calcolaCombinazioni(time, distance)
+	pt2 := calcolaCombinazioni([]int{timePt2}, []int{distancePt2})
+	fmt.Printf("Pt1: %d\nPt2: %d\n", pt1, pt2)
 }
 
-func leggiInput() (time []int, distance []int) {
+func leggiInput() (time []int, distance []int, timePt2 int, distancePt2 int) {
 	scanner := bufio.NewScanner(os.Stdin)
+	var tp, dp string
 	scanner.Scan()
-	time = stringToInt(strings.Fields(scanner.Text())[1:])
+	time, tp = stringToInt(strings.Fields(scanner.Text())[1:])
 	scanner.Scan()
-	distance = stringToInt(strings.Fields(scanner.Text())[1:])
-	return time, distance
+	distance, dp = stringToInt(strings.Fields(scanner.Text())[1:])
+	timePt2, _ = strconv.Atoi(tp)
+	distancePt2, _ = strconv.Atoi(dp)
+	return time, distance, timePt2, distancePt2
 }
 
-func calcolaCombinazioni(time []int, distance []int) {
+func stringToInt(tmp []string) (ris []int, numPt2 string) {
+	for _, v := range tmp {
+		numPt2 += v
+		n, _ := strconv.Atoi(v)
+		ris = append(ris, n)
+	}
+	return
+}
+
+func calcolaCombinazioni(time []int, distance []int) int {
 	tot := 1
 	for i, t := range time {
 		count := 0
@@ -33,17 +46,7 @@ func calcolaCombinazioni(time []int, distance []int) {
 				count++
 			}
 		}
-		fmt.Println("count", count)
 		tot *= count
 	}
-	fmt.Println("tot: ", tot)
-
-}
-
-func stringToInt(tmp []string) (ris []int) {
-	for _, v := range tmp {
-		n, _ := strconv.Atoi(v)
-		ris = append(ris, n)
-	}
-	return
+	return tot
 }
