@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -33,20 +32,32 @@ func leggiFile() (match []Hand) {
 }
 
 func finalScore(match []Hand) (points int) {
-	sort.SliceStable(match, func(i, j int) bool {
-		c1 := match[i].points
-		c2 := match[j].points
-		return c1 < c2
-	})
-
-	for i := 0; i < len(match)-1; i++ {
-		if match[i].points == match[i+1].points && getStrongestHand(match[i], match[i+1]) {
-			match[i], match[i+1] = match[i+1], match[i]
-		}
+	bucket := make([][]Hand, 7)
+	for _, hand := range match {
+		bucket[hand.points-1] = append(bucket[hand.points-1], hand)
 	}
-	for i, hand := range match {
+
+	for i, hands := range bucket {
+		for i := 0; i < len(hands); i++ {
+			for j := i + 1; j < len(hands); j++ {
+				if getStrongestHand(hands[i], hands[j]) {
+					hands[i], hands[j] = hands[j], hands[i]
+				}
+			}
+		}
+		bucket[i] = hands
+	}
+
+	var ris []Hand
+	for _, hand := range bucket {
+		ris = append(ris, hand...)
+	}
+
+	fmt.Println(ris)
+	for i, hand := range ris {
 		points += (hand.factor) * (i + 1)
 	}
+
 	return
 }
 
@@ -54,11 +65,11 @@ func getStrongestHand(hand1 Hand, hand2 Hand) bool {
 	cards1 := hand1.hand
 	cards2 := hand2.hand
 	for i := 0; i < len(cards1); i++ {
-		if powers[rune(cards1[i])] > powers[rune(cards2[i])] {
-			return true
+		if powers[rune(cards1[i])] < powers[rune(cards2[i])] {
+			return false
 		}
 	}
-	return false
+	return true
 }
 
 func getHandPoints(hand string) (points int) {
