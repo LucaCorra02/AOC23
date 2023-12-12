@@ -85,12 +85,10 @@ func LCM(numbers []int, index int) int {
 func leggiInput() (comand []int, graph map[string][]string) {
 	scanner := bufio.NewScanner(os.Stdin)
 	graph = make(map[string][]string)
-
 	scanner.Scan()
 	comand = parseComand([]rune(scanner.Text()))
 	scanner.Scan()
 	scanner.Text()
-
 	for scanner.Scan() {
 		line := strings.ReplaceAll(strings.ReplaceAll(scanner.Text(), "(", ""), ")", "")
 		splitted := strings.Split(line, " = ")
