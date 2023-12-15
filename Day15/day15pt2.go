@@ -27,9 +27,8 @@ func leggiFile() [][]slot {
 		words := strings.Split(scanner.Text(), ",")
 		for _, word := range words {
 			if strings.Contains(word, "=") {
-				splited := strings.Split(word, "=")
-				label := splited[0]
-				focusLent, _ := strconv.Atoi(splited[1])
+				label := strings.Split(word, "=")[0]
+				focusLent, _ := strconv.Atoi(strings.Split(word, "=")[1])
 				searchLabel(hashmap, label, focusLent)
 			} else {
 				label := strings.Split(word, "-")[0]
